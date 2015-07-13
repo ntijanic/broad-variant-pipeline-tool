@@ -1,0 +1,38 @@
+<tool id="broad_variant_pipline" name="BroadVariantPipeline" version="1.0.0">
+    <description></description>
+    <requirements>
+        <!-- This docker image is closed source and must be obtained seperately -->
+        <container type="docker">broad_variant_pipeline</container>
+    </requirements>
+    <command interpreter="bash">
+broad_variant_pipeline.sh ${sample_id} ${tumor_bam} ${tumor_bam.metadata.bam_index} ${normal_bam} ${normal_bam.metadata.bam_index} ${broad_ref_dir} ./
+    </command>
+
+    <inputs>
+        <param name="sample_id" type="text" label="Sample Name"/>
+        <param name="tumor_bam" type="data" format="bam" label="Tumor BAM file"/>
+        <param name="normal_bam" type="data" format="bam" label="Normal BAM file"/>
+        <param name="broad_ref_dir" type="select" label="Broad Reference Directory">
+            <options from_file="broad_ref_dir.loc">
+                <column name="name" index="0"/>
+                <column name="value" index="1"/>
+            </options>
+        </param>
+    </inputs>
+    <outputs>
+        <data name="dRanger" format="vcf_bgzip" label="broad-dRanger.DATECODE.somatic.sv.vcf.gz" from_work_dir="broad-dRanger.DATECODE.somatic.sv.vcf.gz"/>
+        <data name="mutect" format="vcf_bgzip" label="broad-mutect.DATECODE.somatic.snv_mnv.vcf.gz" from_work_dir="broad-mutect.DATECODE.somatic.snv_mnv.vcf.gz"/>
+        <data name="snowman_dRanger" format="vcf_bgzip" label="broad-dRanger_snowman.DATECODE.somatic.sv.vcf.gz" from_work_dir="broad-dRanger_snowman.DATECODE.somatic.sv.vcf.gz"/>
+        <data name="snowman_germline_indel" format="vcf_bgzip" label="broad-snowman.DATECODE.germline.indel.vcf.gz" from_work_dir="broad-snowman.DATECODE.germline.indel.vcf.gz"/>
+        <data name="snowman_germline_sv" format="vcf_bgzip" label="broad-snowman.DATECODE.germline.sv.vcf.gz" from_work_dir="broad-snowman.DATECODE.germline.sv.vcf.gz"/>
+        <data name="snowman_somatic_indel" format="vcf_bgzip" label="broad-snowman.DATECODE.somatic.indel.vcf.gz" from_work_dir="broad-snowman.DATECODE.somatic.indel.vcf.gz"/>
+        <data name="snowman_somatic_sv" format="vcf_bgzip" label="broad-snowman.DATECODE.somatic.sv.vcf.gz" from_work_dir="broad-snowman.DATECODE.somatic.sv.vcf.gz"/>
+        <data format="data" name="broad_output" label="broad.tar.gz" from_work_dir="broad.tar.gz"/>
+    </outputs>
+    <stdio>
+        <exit_code range="1:" level="fatal" />
+    </stdio>
+    <help>
+If you want help, you've come to the wrong place
+  </help>
+</tool>
